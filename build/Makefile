@@ -124,17 +124,17 @@ slambase/fast:
 .PHONY : slambase/fast
 
 #=============================================================================
-# Target rules for targets named joinPointCloud
+# Target rules for targets named visualOdometry
 
 # Build rule for target.
-joinPointCloud: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 joinPointCloud
-.PHONY : joinPointCloud
+visualOdometry: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 visualOdometry
+.PHONY : visualOdometry
 
 # fast build rule for target.
-joinPointCloud/fast:
-	$(MAKE) -f src/CMakeFiles/joinPointCloud.dir/build.make src/CMakeFiles/joinPointCloud.dir/build
-.PHONY : joinPointCloud/fast
+visualOdometry/fast:
+	$(MAKE) -f src/CMakeFiles/visualOdometry.dir/build.make src/CMakeFiles/visualOdometry.dir/build
+.PHONY : visualOdometry/fast
 
 # Help Target
 help:
@@ -145,7 +145,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... slambase"
-	@echo "... joinPointCloud"
+	@echo "... visualOdometry"
 .PHONY : help
 
 

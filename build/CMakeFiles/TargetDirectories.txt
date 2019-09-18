@@ -3,4 +3,4 @@
 /home/ehoxha/Projects/rgbd-slam/build/src/CMakeFiles/rebuild_cache.dir
 /home/ehoxha/Projects/rgbd-slam/build/src/CMakeFiles/edit_cache.dir
 /home/ehoxha/Projects/rgbd-slam/build/src/CMakeFiles/slambase.dir
-/home/ehoxha/Projects/rgbd-slam/build/src/CMakeFiles/joinPointCloud.dir
+/home/ehoxha/Projects/rgbd-slam/build/src/CMakeFiles/visualOdometry.dir
