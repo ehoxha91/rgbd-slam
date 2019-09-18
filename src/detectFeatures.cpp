@@ -12,6 +12,7 @@ using namespace cv;
 
 int main(int argc, char** argv)
 {
+    cout << "OPENCV Version: "<<CV_VERSION<<endl;
     cv::Mat rgb1 = imread("rgb1.png");
     cv::Mat rgb2 = imread("rgb2.png");
     cv::Mat depth1 = imread("depth1.png",-1);
@@ -94,14 +95,14 @@ int main(int argc, char** argv)
     vector<Point2f> pts_img;
 
     //Camera intrisic parameters:
-    CAMERA_INTRINSIC_PARAMETERS C;  //(struct)
+    CamIParam C;  //(struct)
     C.cx = 325.5;
     C.cy = 253.5;
     C.fx = 518.0;
     C.fy = 519.0;
     C.scale = 1000.0;
 
-      for (size_t i=0; i<goodMatches.size(); i++)
+    for (size_t i=0; i<goodMatches.size(); i++)
     {
         //qurey is the first, train is the second
         cv::Point2f p = kp1[goodMatches[i].queryIdx].pt;
@@ -129,7 +130,7 @@ int main(int argc, char** argv)
     cv::Mat rvec, tvec, inliers;
     
     // Solve PnP
-    cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 1.0, 0.99, inliers );
+    cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 8.0, 0.99, inliers );
 
     cout<<"inliers: "<<inliers.rows<<endl;
     cout<<"R="<<rvec<<endl;

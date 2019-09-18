@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam
+CMAKE_SOURCE_DIR = /home/ehoxha/Projects/rgbd-slam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build
+CMAKE_BINARY_DIR = /home/ehoxha/Projects/rgbd-slam/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build/CMakeFiles /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ehoxha/Projects/rgbd-slam/build/CMakeFiles /home/ehoxha/Projects/rgbd-slam/build/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ehoxha/Projects/rgbd-slam/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -124,17 +124,17 @@ slambase/fast:
 .PHONY : slambase/fast
 
 #=============================================================================
-# Target rules for targets named detectFeatures
+# Target rules for targets named joinPointCloud
 
 # Build rule for target.
-detectFeatures: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 detectFeatures
-.PHONY : detectFeatures
+joinPointCloud: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 joinPointCloud
+.PHONY : joinPointCloud
 
 # fast build rule for target.
-detectFeatures/fast:
-	$(MAKE) -f src/CMakeFiles/detectFeatures.dir/build.make src/CMakeFiles/detectFeatures.dir/build
-.PHONY : detectFeatures/fast
+joinPointCloud/fast:
+	$(MAKE) -f src/CMakeFiles/joinPointCloud.dir/build.make src/CMakeFiles/joinPointCloud.dir/build
+.PHONY : joinPointCloud/fast
 
 # Help Target
 help:
@@ -145,7 +145,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... slambase"
-	@echo "... detectFeatures"
+	@echo "... joinPointCloud"
 .PHONY : help
 
 

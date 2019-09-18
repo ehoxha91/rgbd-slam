@@ -1,9 +1,17 @@
+#include <iostream>
+
+#include "opencv2/core.hpp"
+#include "opencv2/features2d.hpp"
+#include "opencv2/calib3d.hpp"
+#include "opencv2/calib3d/calib3d.hpp"
 #include "slamBase.h"
 
-//Convert RGB image/map to point cloud
-PointCloud::Ptr image2PointCloud( Mat& rgb, Mat& depth, CAMERA_INTRINSIC_PARAMETERS& camera )
-{
+using namespace std;
+using namespace cv;
 
+//Convert RGB image/map to point cloud
+PointCloud::Ptr image2PointCloud( Mat& rgb, Mat& depth, CamIParam& camera )
+{
 	PointCloud::Ptr cloud (new PointCloud);
 	for (int m = 0; m < depth.rows; m++)
 	{
@@ -40,7 +48,7 @@ PointCloud::Ptr image2PointCloud( Mat& rgb, Mat& depth, CAMERA_INTRINSIC_PARAMET
 }
 
 //Get 3D coordinates, using depth image and projection.
-cv::Point3f point2dTo3d(Point3f& point, CAMERA_INTRINSIC_PARAMETERS& camera)
+cv::Point3f point2dTo3d(Point3f& point, CamIParam& camera)
 {
 	Point3f p; //3D point where we will save the new point;
 	p.z = double (point.z)/camera.scale;
@@ -49,4 +57,83 @@ cv::Point3f point2dTo3d(Point3f& point, CAMERA_INTRINSIC_PARAMETERS& camera)
 	return p;
 }
 
+//Extract KeyPoints and feature descriptors
+void computeKeyPointsAndDesp(Frame& frame)
+{
+	cv::Ptr<FeatureDetector> _detector;
+	cv::Ptr<DescriptorExtractor> _descriptor;
+	
+	_detector = ORB::create();
+	_descriptor = ORB::create();
+
+	//Detect features
+	_detector->detect(frame.rgb, frame.kp);
+	//Calculate descriptors
+	_descriptor->compute(frame.rgb, frame.kp, frame.desp);
+}
+
+//Estimate motion between two frames
+PnP_Result estimateMotion(Frame& frame1, Frame& frame2, CamIParam& camera)
+{
+	vector<DMatch> matches;
+	BFMatcher matcher;
+	matcher.match(frame1.desp, frame2.desp, matches);
+
+	cout << "Total matches found: "<<matches.size()<<"."<<endl;
+	vector<DMatch> goodMatches;
+	double minDist =9999;
+	double good_match_threshold = 10.0;//atof(pd.getData("good_match_threhold").c_str());
+    for (size_t i = 0; i < matches.size(); i++)
+    {
+        if(matches[i].distance <minDist)
+        {
+            minDist = matches[i].distance;
+        }
+    }
+    cout <<"Minimum distane: " <<minDist<<endl;
+    for (size_t i = 0; i < matches.size(); i++)
+    {
+        if(matches[i].distance <good_match_threshold*minDist)
+        {
+            goodMatches.push_back(matches[i]);
+        }
+    }
+	cout<<"Good matches: "<<goodMatches.size()<<"."<<endl;
+
+	vector<Point3f> pts_obj; //3D points from 1st frame
+	vector<Point2f> pts_img; //Image points from 2nd image
+	
+	for (size_t i = 0; i < goodMatches.size(); i++)
+	{
+		Point2f p = frame1.kp[goodMatches[i].queryIdx].pt;
+		ushort d = frame1.depth.ptr<ushort>(int(p.y))[int(p.x)];
+		if(d == 0) continue;
+
+		pts_img.push_back(Point2f(frame2.kp[goodMatches[i].trainIdx].pt));
+		
+		//Get 3D coordinates of the point;
+		Point3f pt ( p.x, p.y, d );
+        Point3f pd = point2dTo3d( pt, camera );
+		pts_obj.push_back( pd );
+	}
+
+	double camera_matrix_data[3][3] = {
+				{camera.fx, 0, camera.cx},
+				{0, camera.fy, camera.cy},
+				{0, 0, 1}};
+
+	//Solve PnP
+	cout <<"Solving PnP"<<endl;
+
+	Mat cameraMatrix(3,3,CV_64F, camera_matrix_data);
+	Mat rvec, tvec, inliers;
+	cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 8.0, 0.99, inliers);
+	PnP_Result result;
+	result.rvec = rvec; 
+	result.tvec = tvec; 
+	result.inliers = inliers.rows;
+
+	return result;
+	
+}
 

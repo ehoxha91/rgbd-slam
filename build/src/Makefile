@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam
+CMAKE_SOURCE_DIR = /home/ehoxha/Projects/rgbd-slam
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build
+CMAKE_BINARY_DIR = /home/ehoxha/Projects/rgbd-slam/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,14 +80,14 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build/CMakeFiles /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build/src/CMakeFiles/progress.marks
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build/CMakeFiles 0
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(CMAKE_COMMAND) -E cmake_progress_start /home/ehoxha/Projects/rgbd-slam/build/CMakeFiles /home/ehoxha/Projects/rgbd-slam/build/src/CMakeFiles/progress.marks
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/ehoxha/Projects/rgbd-slam/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
 clean:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/clean
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/clean
 .PHONY : clean
 
 # The main clean target
@@ -97,22 +97,22 @@ clean/fast: clean
 
 # Prepare targets for installation.
 preinstall: all
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall
 
 # Prepare targets for installation.
 preinstall/fast:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/preinstall
 .PHONY : preinstall/fast
 
 # clear depends
 depend:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 1
 .PHONY : depend
 
 # Convenience name for target.
 src/CMakeFiles/slambase.dir/rule:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/slambase.dir/rule
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/slambase.dir/rule
 .PHONY : src/CMakeFiles/slambase.dir/rule
 
 # Convenience name for target.
@@ -122,50 +122,50 @@ slambase: src/CMakeFiles/slambase.dir/rule
 
 # fast build rule for target.
 slambase/fast:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/build
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/build
 .PHONY : slambase/fast
 
 # Convenience name for target.
-src/CMakeFiles/detectFeatures.dir/rule:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/detectFeatures.dir/rule
-.PHONY : src/CMakeFiles/detectFeatures.dir/rule
+src/CMakeFiles/joinPointCloud.dir/rule:
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/joinPointCloud.dir/rule
+.PHONY : src/CMakeFiles/joinPointCloud.dir/rule
 
 # Convenience name for target.
-detectFeatures: src/CMakeFiles/detectFeatures.dir/rule
+joinPointCloud: src/CMakeFiles/joinPointCloud.dir/rule
 
-.PHONY : detectFeatures
+.PHONY : joinPointCloud
 
 # fast build rule for target.
-detectFeatures/fast:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/detectFeatures.dir/build.make src/CMakeFiles/detectFeatures.dir/build
-.PHONY : detectFeatures/fast
+joinPointCloud/fast:
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/joinPointCloud.dir/build.make src/CMakeFiles/joinPointCloud.dir/build
+.PHONY : joinPointCloud/fast
 
-detectFeatures.o: detectFeatures.cpp.o
+joinPointCloud.o: joinPointCloud.cpp.o
 
-.PHONY : detectFeatures.o
+.PHONY : joinPointCloud.o
 
 # target to build an object file
-detectFeatures.cpp.o:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/detectFeatures.dir/build.make src/CMakeFiles/detectFeatures.dir/detectFeatures.cpp.o
-.PHONY : detectFeatures.cpp.o
+joinPointCloud.cpp.o:
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/joinPointCloud.dir/build.make src/CMakeFiles/joinPointCloud.dir/joinPointCloud.cpp.o
+.PHONY : joinPointCloud.cpp.o
 
-detectFeatures.i: detectFeatures.cpp.i
+joinPointCloud.i: joinPointCloud.cpp.i
 
-.PHONY : detectFeatures.i
+.PHONY : joinPointCloud.i
 
 # target to preprocess a source file
-detectFeatures.cpp.i:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/detectFeatures.dir/build.make src/CMakeFiles/detectFeatures.dir/detectFeatures.cpp.i
-.PHONY : detectFeatures.cpp.i
+joinPointCloud.cpp.i:
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/joinPointCloud.dir/build.make src/CMakeFiles/joinPointCloud.dir/joinPointCloud.cpp.i
+.PHONY : joinPointCloud.cpp.i
 
-detectFeatures.s: detectFeatures.cpp.s
+joinPointCloud.s: joinPointCloud.cpp.s
 
-.PHONY : detectFeatures.s
+.PHONY : joinPointCloud.s
 
 # target to generate assembly for a file
-detectFeatures.cpp.s:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/detectFeatures.dir/build.make src/CMakeFiles/detectFeatures.dir/detectFeatures.cpp.s
-.PHONY : detectFeatures.cpp.s
+joinPointCloud.cpp.s:
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/joinPointCloud.dir/build.make src/CMakeFiles/joinPointCloud.dir/joinPointCloud.cpp.s
+.PHONY : joinPointCloud.cpp.s
 
 slamBase.o: slamBase.cpp.o
 
@@ -173,7 +173,7 @@ slamBase.o: slamBase.cpp.o
 
 # target to build an object file
 slamBase.cpp.o:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.o
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.o
 .PHONY : slamBase.cpp.o
 
 slamBase.i: slamBase.cpp.i
@@ -182,7 +182,7 @@ slamBase.i: slamBase.cpp.i
 
 # target to preprocess a source file
 slamBase.cpp.i:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.i
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.i
 .PHONY : slamBase.cpp.i
 
 slamBase.s: slamBase.cpp.s
@@ -191,7 +191,7 @@ slamBase.s: slamBase.cpp.s
 
 # target to generate assembly for a file
 slamBase.cpp.s:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.s
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.s
 .PHONY : slamBase.cpp.s
 
 # Help Target
@@ -203,10 +203,10 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... slambase"
-	@echo "... detectFeatures"
-	@echo "... detectFeatures.o"
-	@echo "... detectFeatures.i"
-	@echo "... detectFeatures.s"
+	@echo "... joinPointCloud"
+	@echo "... joinPointCloud.o"
+	@echo "... joinPointCloud.i"
+	@echo "... joinPointCloud.s"
 	@echo "... slamBase.o"
 	@echo "... slamBase.i"
 	@echo "... slamBase.s"
@@ -221,6 +221,6 @@ help:
 # No rule that depends on this can have commands that come from listfiles
 # because they might be regenerated.
 cmake_check_build_system:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(CMAKE_COMMAND) -H$(CMAKE_SOURCE_DIR) -B$(CMAKE_BINARY_DIR) --check-build-system CMakeFiles/Makefile.cmake 0
 .PHONY : cmake_check_build_system
 

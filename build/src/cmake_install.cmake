@@ -1,4 +1,4 @@
-# Install script for directory: /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/src
+# Install script for directory: /home/ehoxha/Projects/rgbd-slam/src
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
