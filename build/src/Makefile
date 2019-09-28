@@ -126,19 +126,46 @@ slambase/fast:
 .PHONY : slambase/fast
 
 # Convenience name for target.
-src/CMakeFiles/visualOdometry.dir/rule:
-	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/visualOdometry.dir/rule
-.PHONY : src/CMakeFiles/visualOdometry.dir/rule
+src/CMakeFiles/slam.dir/rule:
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/slam.dir/rule
+.PHONY : src/CMakeFiles/slam.dir/rule
 
 # Convenience name for target.
-visualOdometry: src/CMakeFiles/visualOdometry.dir/rule
+slam: src/CMakeFiles/slam.dir/rule
 
-.PHONY : visualOdometry
+.PHONY : slam
 
 # fast build rule for target.
-visualOdometry/fast:
-	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/visualOdometry.dir/build.make src/CMakeFiles/visualOdometry.dir/build
-.PHONY : visualOdometry/fast
+slam/fast:
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/slam.dir/build.make src/CMakeFiles/slam.dir/build
+.PHONY : slam/fast
+
+slam.o: slam.cpp.o
+
+.PHONY : slam.o
+
+# target to build an object file
+slam.cpp.o:
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/slam.dir/build.make src/CMakeFiles/slam.dir/slam.cpp.o
+.PHONY : slam.cpp.o
+
+slam.i: slam.cpp.i
+
+.PHONY : slam.i
+
+# target to preprocess a source file
+slam.cpp.i:
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/slam.dir/build.make src/CMakeFiles/slam.dir/slam.cpp.i
+.PHONY : slam.cpp.i
+
+slam.s: slam.cpp.s
+
+.PHONY : slam.s
+
+# target to generate assembly for a file
+slam.cpp.s:
+	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/slam.dir/build.make src/CMakeFiles/slam.dir/slam.cpp.s
+.PHONY : slam.cpp.s
 
 slamBase.o: slamBase.cpp.o
 
@@ -167,33 +194,6 @@ slamBase.cpp.s:
 	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.s
 .PHONY : slamBase.cpp.s
 
-visualOdometry.o: visualOdometry.cpp.o
-
-.PHONY : visualOdometry.o
-
-# target to build an object file
-visualOdometry.cpp.o:
-	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/visualOdometry.dir/build.make src/CMakeFiles/visualOdometry.dir/visualOdometry.cpp.o
-.PHONY : visualOdometry.cpp.o
-
-visualOdometry.i: visualOdometry.cpp.i
-
-.PHONY : visualOdometry.i
-
-# target to preprocess a source file
-visualOdometry.cpp.i:
-	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/visualOdometry.dir/build.make src/CMakeFiles/visualOdometry.dir/visualOdometry.cpp.i
-.PHONY : visualOdometry.cpp.i
-
-visualOdometry.s: visualOdometry.cpp.s
-
-.PHONY : visualOdometry.s
-
-# target to generate assembly for a file
-visualOdometry.cpp.s:
-	cd /home/ehoxha/Projects/rgbd-slam/build && $(MAKE) -f src/CMakeFiles/visualOdometry.dir/build.make src/CMakeFiles/visualOdometry.dir/visualOdometry.cpp.s
-.PHONY : visualOdometry.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -203,13 +203,13 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... slambase"
-	@echo "... visualOdometry"
+	@echo "... slam"
+	@echo "... slam.o"
+	@echo "... slam.i"
+	@echo "... slam.s"
 	@echo "... slamBase.o"
 	@echo "... slamBase.i"
 	@echo "... slamBase.s"
-	@echo "... visualOdometry.o"
-	@echo "... visualOdometry.i"
-	@echo "... visualOdometry.s"
 .PHONY : help
 
 

@@ -31,6 +31,8 @@ opencv2/core/eigen.hpp
 -
 pcl-1.8/pcl/io/pcd_io.h
 -
+pcl-1.8/pcl/filters/passthrough.h
+-
 pcl-1.8/pcl/point_types.h
 -
 pcl-1.8/pcl/common/transforms.h
@@ -38,6 +40,8 @@ pcl-1.8/pcl/common/transforms.h
 pcl-1.8/pcl/visualization/cloud_viewer.h
 -
 pcl-1.8/pcl/filters/voxel_grid.h
+-
+pcl-1.8/pcl/filters/passthrough.h
 -
 
 /home/ehoxha/Projects/rgbd-slam/src/slamBase.cpp

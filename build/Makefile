@@ -124,17 +124,17 @@ slambase/fast:
 .PHONY : slambase/fast
 
 #=============================================================================
-# Target rules for targets named visualOdometry
+# Target rules for targets named slam
 
 # Build rule for target.
-visualOdometry: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 visualOdometry
-.PHONY : visualOdometry
+slam: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 slam
+.PHONY : slam
 
 # fast build rule for target.
-visualOdometry/fast:
-	$(MAKE) -f src/CMakeFiles/visualOdometry.dir/build.make src/CMakeFiles/visualOdometry.dir/build
-.PHONY : visualOdometry/fast
+slam/fast:
+	$(MAKE) -f src/CMakeFiles/slam.dir/build.make src/CMakeFiles/slam.dir/build
+.PHONY : slam/fast
 
 # Help Target
 help:
@@ -145,7 +145,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... slambase"
-	@echo "... visualOdometry"
+	@echo "... slam"
 .PHONY : help
 
 

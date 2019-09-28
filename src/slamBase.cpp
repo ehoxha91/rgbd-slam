@@ -1,13 +1,8 @@
-#include <iostream>
-
-#include "opencv2/core.hpp"
-#include "opencv2/features2d.hpp"
-#include "opencv2/calib3d.hpp"
-#include "opencv2/calib3d/calib3d.hpp"
 #include "slamBase.h"
 
 using namespace std;
 using namespace cv;
+
 
 //Convert RGB image/map to point cloud
 PointCloud::Ptr image2PointCloud( Mat& rgb, Mat& depth, CamIParam& camera )
@@ -48,9 +43,9 @@ PointCloud::Ptr image2PointCloud( Mat& rgb, Mat& depth, CamIParam& camera )
 }
 
 //Get 3D coordinates, using depth image and projection.
-cv::Point3f point2dTo3d(Point3f& point, CamIParam& camera)
+cv::Point3f point2dTo3d(cv::Point3f& point, CamIParam& camera)
 {
-	Point3f p; //3D point where we will save the new point;
+	cv::Point3f p; //3D point where we will save the new point;
 	p.z = double (point.z)/camera.scale;
 	p.x = (point.x - camera.cx) * p.z / camera.fx;
 	p.y = (point.y - camera.cy) * p.z / camera.fy;
@@ -137,3 +132,46 @@ PnP_Result estimateMotion(Frame& frame1, Frame& frame2, CamIParam& camera)
 	
 }
 
+//Convert rvec and tvec to T - Homogenous transformation matrix
+Eigen::Isometry3d cvMat2Eigen(cv::Mat& rvec, cv::Mat& tvec)
+{
+	cv::Mat R;
+	cv::Rodrigues(rvec, R);
+	Eigen::Matrix3d r;
+	//Copy values from CV format to Eigen format matrix
+	for ( int i=0; i<3; i++ )  //Also cv::cv2eigen(R, r) does the job of this loop
+    {    
+		for ( int j=0; j<3; j++ ) 
+            r(i,j) = R.at<double>(i,j);
+	}
+
+	//Convert translation and rotation vector to a Homogenous Transform matrix
+	Eigen::Isometry3d T = Eigen::Isometry3d::Identity();
+
+	Eigen::AngleAxisd angle(r);
+	T = angle; //Copy rotation matrix.
+	//Copy translation vector
+	T(0,3) = tvec.at<double>(0,0);
+    T(1,3) = tvec.at<double>(0,1);
+    T(2,3) = tvec.at<double>(0,2);
+	return T;	//Return T - Homogenous transformation matrix
+}
+
+//Join point clouds
+PointCloud::Ptr joinPointCloud(PointCloud::Ptr original, Frame& newFrame, Eigen::Isometry3d T, CamIParam& camera)
+{
+	PointCloud::Ptr newCloud = image2PointCloud( newFrame.rgb, newFrame.depth, camera);
+
+	//Merge point cloud
+	PointCloud::Ptr output (new PointCloud());
+	pcl::transformPointCloud(*original, *output, T.matrix());
+	*newCloud += *output;
+
+	//Voxel grid filter - reduce number of points on the point cloud; memory use reduction
+	static pcl::VoxelGrid<PointT> voxel;
+    voxel.setLeafSize( 0.01f, 0.01f,0.01f); //1cm leaf
+    voxel.setInputCloud( newCloud );
+    PointCloud::Ptr tmp( new PointCloud() );
+    voxel.filter( *tmp );
+    return tmp;
+}
