@@ -1,10 +1,10 @@
 #include <iostream>
 #include "slamBase.h"
 
-#include "opencv2/core.hpp"
-#include "opencv2/features2d.hpp"
-#include "opencv2/calib3d.hpp"
-#include "opencv2/calib3d/calib3d.hpp"
+#include <opencv2/core.hpp>
+#include <opencv2/features2d.hpp>
+#include <opencv2/calib3d.hpp>
+#include <opencv2/xfeatures2d/nonfree.hpp>
 
 
 using namespace std;
@@ -16,12 +16,15 @@ int main(int argc, char** argv)
     cv::Mat rgb2 = imread("rgb2.png");
     cv::Mat depth1 = imread("depth1.png",-1);
     cv::Mat depth2 = imread("depth2.png",-1);
+    cout <<"VERSION " <<CV_VERSION<<endl;
 
     // Feature extractor and description
     Ptr<FeatureDetector> detector;
     Ptr<DescriptorExtractor> descriptor;
-
+    
     // We use ORB extractor and descriptor
+    //detector = xfeatures2d::SIFT::create();
+    //descriptor = xfeatures2d::SIFT::create();
     detector = ORB::create();
     descriptor = ORB::create();
 
@@ -129,7 +132,7 @@ int main(int argc, char** argv)
     cv::Mat rvec, tvec, inliers;
     
     // Solve PnP
-    cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, cv::Mat(), rvec, tvec, false, 100, 1.0, 0.99, inliers );
+    cv::solvePnPRansac( pts_obj, pts_img, cameraMatrix, Mat(), rvec, tvec, false , 1000 , 8.0 , 0.99 , inliers );
 
     cout<<"inliers: "<<inliers.rows<<endl;
     cout<<"R="<<rvec<<endl;

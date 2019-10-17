@@ -4,6 +4,9 @@
 # required Point Cloud Library
 FIND_PACKAGE( PCL REQUIRED )
 
+# I want to use OpenCV 4.1.2, set the directory of installation:
+# Because I only installed CONTRIB_LIB on 4.1.2
+SET(OpenCV_DIR /installation/OpenCV-/lib/cmake/opencv4)
 # OpenCV import
 FIND_PACKAGE( OpenCV REQUIRED )
 
