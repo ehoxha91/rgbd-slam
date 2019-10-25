@@ -12,9 +12,11 @@ To build do these steps:
 - `cmake ..`
 - `make`
 
-If it fails, check the CMakeLists.txt and remove the line:
+If it fails with errors related to OpenCV, check the CMakeLists.txt and remove the line:
 
 - `SET(OpenCV_DIR /installation/OpenCV-/lib/cmake/opencv4)`
+
+because I use OpenCV 4.1...
 
 Compiled file is saved on:
 - `/rgbd-slam/bin/`
