@@ -126,46 +126,19 @@ slambase/fast:
 .PHONY : slambase/fast
 
 # Convenience name for target.
-src/CMakeFiles/detectFeatures.dir/rule:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/detectFeatures.dir/rule
-.PHONY : src/CMakeFiles/detectFeatures.dir/rule
+src/CMakeFiles/slam.dir/rule:
+	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f CMakeFiles/Makefile2 src/CMakeFiles/slam.dir/rule
+.PHONY : src/CMakeFiles/slam.dir/rule
 
 # Convenience name for target.
-detectFeatures: src/CMakeFiles/detectFeatures.dir/rule
+slam: src/CMakeFiles/slam.dir/rule
 
-.PHONY : detectFeatures
+.PHONY : slam
 
 # fast build rule for target.
-detectFeatures/fast:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/detectFeatures.dir/build.make src/CMakeFiles/detectFeatures.dir/build
-.PHONY : detectFeatures/fast
-
-detectFeatures.o: detectFeatures.cpp.o
-
-.PHONY : detectFeatures.o
-
-# target to build an object file
-detectFeatures.cpp.o:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/detectFeatures.dir/build.make src/CMakeFiles/detectFeatures.dir/detectFeatures.cpp.o
-.PHONY : detectFeatures.cpp.o
-
-detectFeatures.i: detectFeatures.cpp.i
-
-.PHONY : detectFeatures.i
-
-# target to preprocess a source file
-detectFeatures.cpp.i:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/detectFeatures.dir/build.make src/CMakeFiles/detectFeatures.dir/detectFeatures.cpp.i
-.PHONY : detectFeatures.cpp.i
-
-detectFeatures.s: detectFeatures.cpp.s
-
-.PHONY : detectFeatures.s
-
-# target to generate assembly for a file
-detectFeatures.cpp.s:
-	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/detectFeatures.dir/build.make src/CMakeFiles/detectFeatures.dir/detectFeatures.cpp.s
-.PHONY : detectFeatures.cpp.s
+slam/fast:
+	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/slam.dir/build.make src/CMakeFiles/slam.dir/build
+.PHONY : slam/fast
 
 slamBase.o: slamBase.cpp.o
 
@@ -194,6 +167,33 @@ slamBase.cpp.s:
 	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/slambase.dir/build.make src/CMakeFiles/slambase.dir/slamBase.cpp.s
 .PHONY : slamBase.cpp.s
 
+slamEH.o: slamEH.cpp.o
+
+.PHONY : slamEH.o
+
+# target to build an object file
+slamEH.cpp.o:
+	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/slam.dir/build.make src/CMakeFiles/slam.dir/slamEH.cpp.o
+.PHONY : slamEH.cpp.o
+
+slamEH.i: slamEH.cpp.i
+
+.PHONY : slamEH.i
+
+# target to preprocess a source file
+slamEH.cpp.i:
+	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/slam.dir/build.make src/CMakeFiles/slam.dir/slamEH.cpp.i
+.PHONY : slamEH.cpp.i
+
+slamEH.s: slamEH.cpp.s
+
+.PHONY : slamEH.s
+
+# target to generate assembly for a file
+slamEH.cpp.s:
+	cd /home/ehoxha/ProjectsCV/rgbd-slam-tutorial/m-slam/build && $(MAKE) -f src/CMakeFiles/slam.dir/build.make src/CMakeFiles/slam.dir/slamEH.cpp.s
+.PHONY : slamEH.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -203,13 +203,13 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... slambase"
-	@echo "... detectFeatures"
-	@echo "... detectFeatures.o"
-	@echo "... detectFeatures.i"
-	@echo "... detectFeatures.s"
+	@echo "... slam"
 	@echo "... slamBase.o"
 	@echo "... slamBase.i"
 	@echo "... slamBase.s"
+	@echo "... slamEH.o"
+	@echo "... slamEH.i"
+	@echo "... slamEH.s"
 .PHONY : help
 
 

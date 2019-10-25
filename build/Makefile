@@ -124,17 +124,17 @@ slambase/fast:
 .PHONY : slambase/fast
 
 #=============================================================================
-# Target rules for targets named detectFeatures
+# Target rules for targets named slam
 
 # Build rule for target.
-detectFeatures: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 detectFeatures
-.PHONY : detectFeatures
+slam: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 slam
+.PHONY : slam
 
 # fast build rule for target.
-detectFeatures/fast:
-	$(MAKE) -f src/CMakeFiles/detectFeatures.dir/build.make src/CMakeFiles/detectFeatures.dir/build
-.PHONY : detectFeatures/fast
+slam/fast:
+	$(MAKE) -f src/CMakeFiles/slam.dir/build.make src/CMakeFiles/slam.dir/build
+.PHONY : slam/fast
 
 # Help Target
 help:
@@ -145,7 +145,7 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... slambase"
-	@echo "... detectFeatures"
+	@echo "... slam"
 .PHONY : help
 
 
