@@ -6,18 +6,7 @@
 using namespace cv;
 using namespace std;
 
-
-#include <g2o/types/slam3d/types_slam3d.h>
-#include <g2o/core/sparse_optimizer.h>
-#include <g2o/core/block_solver.h>
-#include <g2o/core/factory.h>
-#include <g2o/core/optimization_algorithm_factory.h>
-#include <g2o/core/optimization_algorithm_gauss_newton.h>
-#include <g2o/solvers/eigen/linear_solver_eigen.h>
-#include <g2o/core/robust_kernel.h>
-#include <g2o/core/robust_kernel_impl.h>
-#include <g2o/core/optimization_algorithm_levenberg.h>
-
+#include "OptimizerE.h"
 
 #pragma region Parameters
 //Camera settings for freiburgh data
@@ -36,15 +25,14 @@ int random_loops=5;   //How many loops to search in randomly
 #pragma endregion
 
 
-CHECK_RESULT checkKeyFrame(Frame &frame1, Frame &frame2, g2o::SparseOptimizer &optimizer, bool is_loops=false);
+CHECK_RESULT checkKeyFrame(Frame &frame1, Frame &frame2, bool is_loops=false);
 Frame readFrame(int index);
 double normofTransform(Mat rvec, Mat tvec );
-
 //Loop Closure:
-//1. Check for loops in neighbourhood, close range search!
-void checkNearbyLoops( vector<Frame>& frames, Frame& currentFrame, g2o::SparseOptimizer& optimizer);
-//2. Check random keyframes for loop closure!
-void checkRandomLoops( vector<Frame>& frames, Frame& currentFrame, g2o::SparseOptimizer& optimizer);
+void checkNearbyLoops( vector<Frame>& frames, Frame& currentFrame);
+void checkRandomLoops( vector<Frame>& frames, Frame& currentFrame);
+
+OptimizerE optimizeE;       //Optimizer class 
 
 int main(int argc, char** argv)
 {
@@ -64,26 +52,11 @@ int main(int argc, char** argv)
     Frame currFrame = readFrame(currIndex);
     computeKeyPointsAndDesp(currFrame); //detect keypoints and calculate descriptors
 
-    //PointCloud::Ptr pcloud = image2PointCloud(currFrame.rgb, currFrame.depth, camera);
-    //pcl::visualization::CloudViewer viewer("Viewer");
-
-    //Initialize g2o
-    std::unique_ptr<g2o::BlockSolver_6_3::LinearSolverType> linearSolver (new g2o::LinearSolverEigen<g2o::BlockSolver_6_3::PoseMatrixType>());
-    std::unique_ptr<g2o::BlockSolver_6_3> blockSolver (new g2o::BlockSolver_6_3(std::move(linearSolver)));
-    g2o::OptimizationAlgorithmLevenberg* solver = new g2o::OptimizationAlgorithmLevenberg(std::move(blockSolver));
-
-    g2o::SparseOptimizer globalOptimizer;
-    globalOptimizer.setAlgorithm(solver);
-
-    //Disable outputing debug information
-    //globalOptimizer.setVerbose(false);
-
+    //Initialize g2o optimization
+    optimizeE.globalOptimizer.setVerbose(false);
+    
     //Add the first vertex to the optimizer:
-    g2o::VertexSE3* v = new g2o::VertexSE3();
-    v->setId(currIndex);
-    v->setEstimate(Eigen::Isometry3d::Identity()); // Estimate as the unit matrix, first step
-    v->setFixed(true);  //First vertex/frame/pose is the world coordinate, I matrix; Is fixed, no optimization on this one;
-    globalOptimizer.addVertex(v);
+    optimizeE.AddVertex(startIndex);
 
     keyframes.push_back(currFrame);
 
@@ -92,7 +65,7 @@ int main(int argc, char** argv)
         cout << "Frame "<<currIndex<<endl;
         currFrame = readFrame(currIndex);
         computeKeyPointsAndDesp(currFrame);
-        CHECK_RESULT result = checkKeyFrame( keyframes.back(), currFrame, globalOptimizer, false);
+        CHECK_RESULT result = checkKeyFrame( keyframes.back(), currFrame, false);
 
         switch (result)
         {
@@ -113,8 +86,8 @@ int main(int argc, char** argv)
                 
                 if(check_loop_closure)
                 {   //Now time to check for loopclosing
-                    checkNearbyLoops(keyframes,currFrame, globalOptimizer);
-                    checkRandomLoops(keyframes,currFrame, globalOptimizer);
+                    checkNearbyLoops(keyframes,currFrame);
+                    checkRandomLoops(keyframes,currFrame);
                 }
                 keyframes.push_back(currFrame);
 
@@ -123,66 +96,14 @@ int main(int argc, char** argv)
                 break;
         }
     }
-
     //We start optimization of all nodes:
-    cout <<RESET"\n Optimizing the graph with: "<<globalOptimizer.vertices().size()<<" nodes\n";
-    globalOptimizer.save("nonoptimizedGraph.g2o");
-    globalOptimizer.initializeOptimization();
-    globalOptimizer.optimize(100); //Try 100 iteration for optimization
-    globalOptimizer.save("optimizedGraph.g2o");
-    cout <<GREEN"Optimization done"<<endl;
-    globalOptimizer.clear();
-
-    //Using optimized graph to generate the point cloud!
-    cout<<YELLOW"Saving the point cloud map..."<<endl;
-    PointCloud::Ptr output (new PointCloud());
-    PointCloud::Ptr tmp (new PointCloud());
-
-    //Grid filter, to adjust the resolution, faster!
-    pcl::VoxelGrid<PointT> voxel; 
-    pcl::PassThrough<PointT> pass;
-    pass.setFilterFieldName("z");  //Set a limit for the depth
-    pass.setFilterLimits(0.0,0.4); //filter info that are deeper than 4m
-
-    voxel.setLeafSize(0.01f,0.01f,0.01f);
+    optimizeE.Optimize(100);
 
     for (size_t i = 0; i < keyframes.size(); i++)
     {
         //Take a frame from g2o
-        cout<<YELLOW"Saving 1"<<endl;
-        g2o::VertexSE3 *vertex = dynamic_cast<g2o::VertexSE3*>(globalOptimizer.vertex(keyframes[i].frameID));
-        //Optimized pose for the frame:
-        cout<<YELLOW"Saving 2"<<endl;
-
-        Eigen::Isometry3d pose = vertex->estimate();
-        cout<<"Pose="<<endl<<pose.matrix()<<endl;
-
-        cout<<YELLOW"Saving 3"<<endl;
-        PointCloud::Ptr newCloud = image2PointCloud( keyframes[i].rgb, keyframes[i].depth, camera ); //Generate point cloud
-        //Filter the pointcloud
-        cout<<YELLOW"Saving 4"<<endl;
-        voxel.setInputCloud(newCloud);
-        cout<<YELLOW"Saving 5"<<endl;
-        voxel.filter(*tmp);
-        cout<<YELLOW"Saving 6"<<endl;
-        pass.setInputCloud(tmp);
-        cout<<YELLOW"Saving 7"<<endl;
-        pass.filter(*newCloud);
-        cout<<YELLOW"Saving 8"<<endl;
-        pcl::transformPointCloud(*newCloud, *tmp, pose.matrix());
-        *output += *tmp;
-        cout<<YELLOW"Saving 9"<<endl;
-        tmp->clear();
-        cout<<YELLOW"Saving 10"<<endl;
-        newCloud->clear();
-        cout<<YELLOW"Saving 11"<<endl;
     }
-    voxel.setInputCloud(output);
-    voxel.filter(*tmp);
     
-
-    waitKey(10000);
-    pcl::io::savePCDFile("resultPCL.pcd", *output );
     return 0;
 }
 
@@ -203,7 +124,7 @@ double normofTransform(Mat rvec, Mat tvec )
     return fabs(min(norm(rvec), 2*M_PI-norm(rvec)))+ fabs(norm(tvec)); //fabs - absolute value  // norm - gjatesia e.g. norm(3,4) = (9+16)
 }
 
-CHECK_RESULT checkKeyFrame(Frame &frame1, Frame &frame2, g2o::SparseOptimizer &optimizer, bool is_loops)
+CHECK_RESULT checkKeyFrame(Frame &frame1, Frame &frame2, bool is_loops)
 {
     PnP_Result result = estimateMotion(frame1, frame2, camera);
   
@@ -231,48 +152,28 @@ CHECK_RESULT checkKeyFrame(Frame &frame1, Frame &frame2, g2o::SparseOptimizer &o
     //If no loops add this vertex to the graph for optimizing
     if(is_loops == false)
     {
-        g2o::VertexSE3 *vertex = new g2o::VertexSE3();
-        vertex->setId(frame2.frameID);
-        vertex->setEstimate(Eigen::Isometry3d::Identity());
-        optimizer.addVertex(vertex);
+        optimizeE.AddVertex(frame2.frameID);
     }
     //Create the link between two edges:
-    g2o::EdgeSE3 *edge = new g2o::EdgeSE3();
-    //Connect two vertices with this edge:
-    edge->setVertex(0, optimizer.vertex(frame1.frameID));
-    edge->setVertex(1, optimizer.vertex(frame2.frameID));
-    edge->setRobustKernel(new g2o::RobustKernelHuber());
-
-    // Information matrix
-    // The information matrix is the inverse of the covariance matrix, 
-    // indicating our pre-estimation of the accurracy of the edges
-    // Pose is 6D vector, we need the information and covariance matrix to be 6x6. 
-    // We assume that position and angle estimates are independent.
-    // This means that Covariance matrix is a diagonal matrix diagonal(0.01, 0.01, 0.01, 0.01, 0.01, 0.01)
-    // Information matrix is the inverse of this matrix and is a diagonal(100,100,100,100,100,100);
-    // The larger the value of the element in the diagonal, the more accurate is the estimation
-    Eigen::Matrix<double, 6, 6> information = Eigen::Matrix<double, 6, 6>::Identity();
-
+    Eigen::Matrix<double, 6, 6> infoMatrix = Eigen::Matrix<double, 6, 6>::Identity();
     for (size_t i = 0; i < 6; i++)
     {
-        information(i,i) = 100;
+        infoMatrix(i,i) = 100;
     }
-    edge->setInformation(information);  //We link the information matrix with the edge
     Eigen::Isometry3d T = cvMat2Eigen(result.rvec, result.tvec); //get Homogenous transformation matrxi from Vectors
-    edge->setMeasurement(T.inverse());  //As estimate we consider the T matrix from PnPRansac, Inverse(from frame 1 to 2)
-    optimizer.addEdge(edge);            //In the end add this edge to the optimizer
+    optimizeE.AddEdge(frame1.frameID, frame2.frameID, infoMatrix, T);
 
     return KEYFRAME;    //We have a keyframe 
 }
 
-void checkNearbyLoops( vector<Frame>& frames, Frame& currentFrame, g2o::SparseOptimizer& optimizer)
+void checkNearbyLoops( vector<Frame>& frames, Frame& currentFrame)
 {
     if(frames.size() <= nearby_loops)
     {
         //We don't even have as much as we need to check, so let's check everything
         for (size_t i = 0; i < frames.size(); i++)
         {
-            checkKeyFrame(frames[i], currentFrame, optimizer, true);
+            checkKeyFrame(frames[i], currentFrame, true);
         }
     }
     else
@@ -281,7 +182,7 @@ void checkNearbyLoops( vector<Frame>& frames, Frame& currentFrame, g2o::SparseOp
         for (size_t i = frames.size() - nearby_loops; i < frames.size(); i++)
         {
             //If number of frames is 200, then last 5 are our "nearby frames", 200, 199, ..., 196
-            checkKeyFrame(frames[i], currentFrame, optimizer, true);
+            checkKeyFrame(frames[i], currentFrame, true);
         }
         
     }
@@ -289,14 +190,14 @@ void checkNearbyLoops( vector<Frame>& frames, Frame& currentFrame, g2o::SparseOp
 
 }
 
-void checkRandomLoops( vector<Frame>& frames, Frame& currentFrame, g2o::SparseOptimizer& optimizer)
+void checkRandomLoops( vector<Frame>& frames, Frame& currentFrame)
 {
       if ( frames.size() <= random_loops )
     {
         // no enough keyframes, check everyone
         for (size_t i=0; i<frames.size(); i++)
         {
-            checkKeyFrame( frames[i], currentFrame, optimizer, true );
+            checkKeyFrame( frames[i], currentFrame, true );
         }
     }
     else
@@ -305,7 +206,7 @@ void checkRandomLoops( vector<Frame>& frames, Frame& currentFrame, g2o::SparseOp
         for (int i=0; i<random_loops; i++)
         {
             int index = rand()%frames.size();
-            checkKeyFrame( frames[i], currentFrame, optimizer, true );
+            checkKeyFrame( frames[i], currentFrame, true );
         }
     }
 }

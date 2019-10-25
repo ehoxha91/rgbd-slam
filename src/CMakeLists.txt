@@ -28,7 +28,7 @@ TARGET_LINK_LIBRARIES( slambase
     ${OpenCV_LIBS} 
     ${PCL_LIBRARIES} )
 
-ADD_EXECUTABLE( slam slamEH.cpp)
+ADD_EXECUTABLE( slam slam.cpp)
 TARGET_LINK_LIBRARIES( slam
     slambase
     optimizer_eh
