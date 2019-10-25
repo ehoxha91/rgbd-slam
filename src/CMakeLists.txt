@@ -1,6 +1,3 @@
-
-#ADD_EXECUTABLE( main main.cpp )
-
 # required Point Cloud Library
 FIND_PACKAGE( PCL REQUIRED )
 
