@@ -3,7 +3,7 @@
 A simple slam implementation for rgbd camera.
 I used gaoxiang12 tutorial to build this simple SLAM.
 
-## Build
+### Build
 
 To build do these steps:
 
