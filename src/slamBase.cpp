@@ -77,7 +77,7 @@ PnP_Result estimateMotion(Frame& frame1, Frame& frame2, CamIParam& camera)
 	cout << "Total matches found: "<<matches.size()<<"."<<endl;
 	vector<DMatch> goodMatches;
 	double minDist =9999;
-	double good_match_threshold = 10.0;//atof(pd.getData("good_match_threhold").c_str());
+	double good_match_threshold = 10.0;	//atof(pd.getData("good_match_threhold").c_str());
     for (size_t i = 0; i < matches.size(); i++)
     {
         if(matches[i].distance <minDist)
@@ -151,9 +151,9 @@ Eigen::Isometry3d cvMat2Eigen(cv::Mat& rvec, cv::Mat& tvec)
 	Eigen::AngleAxisd angle(r);
 	T = angle; //Copy rotation matrix.
 	//Copy translation vector
-	T(0,3) = tvec.at<double>(0,0);
-    T(1,3) = tvec.at<double>(0,1);
-    T(2,3) = tvec.at<double>(0,2);
+	T(0,3) = tvec.at<double>(0,0); // Tx
+    T(1,3) = tvec.at<double>(0,1); // Ty
+    T(2,3) = tvec.at<double>(0,2); // Tz
 	return T;	//Return T - Homogenous transformation matrix
 }
 

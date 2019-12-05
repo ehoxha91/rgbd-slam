@@ -25,13 +25,13 @@ TARGET_LINK_LIBRARIES( slambase
     ${OpenCV_LIBS} 
     ${PCL_LIBRARIES} )
 
-ADD_EXECUTABLE( slam slamFinal.cpp)
+ADD_EXECUTABLE( slam slam.cpp)
 TARGET_LINK_LIBRARIES( slam
     slambase
     optimizer_eh
     ${OpenCV_LIBS} 
     ${PCL_LIBRARIES}
-    g2o_core g2o_types_slam3d g2o_solver_csparse g2o_stuff g2o_csparse_extension ${CSPARSE_LIBRARY})
+    g2o_core g2o_types_slam3d g2o_types_sba g2o_solver_csparse g2o_stuff g2o_csparse_extension ${CSPARSE_LIBRARY})
 
 #On process builds.
 
